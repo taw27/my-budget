@@ -12,7 +12,7 @@ export class User {
   @IsNotEmpty()
   email: string;
 
-  @Column('text')
+  @Column('text', { select: false })
   @IsNotEmpty()
   password: string;
 }
