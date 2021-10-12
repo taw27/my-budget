@@ -5,6 +5,7 @@ import { SignUpDto } from './dtos/sign-up.dto';
 import { ResponseUser } from './dtos/response-user.dto';
 import { LocalAuthGuard } from './auth-guards/local-auth.guard';
 import { User } from 'src/user/user.entity';
+import { ResponseJwt } from './dtos/response-jwt.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +21,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/signin')
+  @Serialize(ResponseJwt)
   async signIn(@Request() req: Request & { user: User }) {
     const { user } = req;
 
