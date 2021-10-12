@@ -6,11 +6,14 @@ import { ResponseUser } from './dtos/response-user.dto';
 import { LocalAuthGuard } from './auth-guards/local-auth.guard';
 import { User } from 'src/user/user.entity';
 import { ResponseJwt } from './dtos/response-jwt.dto';
+import { PublicRoute } from 'src/decorators/public-route.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  // Returns a newly created user if correct new user details are sent
+  @PublicRoute()
   @Post('/signup')
   @Serialize(ResponseUser)
   async signUp(@Body() { email, password }: SignUpDto) {
@@ -19,7 +22,9 @@ export class AuthController {
     return user;
   }
 
-  @UseGuards(LocalAuthGuard)
+  // Route returns an access token is request sent with correct log in credentials
+  @PublicRoute() // defines route as public to bypass jwt check
+  @UseGuards(LocalAuthGuard) // verifies log in credentials
   @Post('/signin')
   @Serialize(ResponseJwt)
   async signIn(@Request() req: Request & { user: User }) {
